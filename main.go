@@ -43,7 +43,7 @@ func getNoteForText(context *gin.Context) {
 	text := context.Param("text")
 	note, err := getNoteByText(text)
 	if err != nil {
-		context.IndentedJSON(http.StatusNotFound, gin.H{"massage": "Не найдено"})
+		NotFoundErrorfunc(context, err)
 		return
 	}
 	context.IndentedJSON(http.StatusOK, note)
@@ -63,7 +63,7 @@ func getNoteForDate(context *gin.Context) {
 	data := context.Param("data")
 	note, err := getNoteByDate(data)
 	if err != nil {
-		context.IndentedJSON(http.StatusNotFound, gin.H{"massage": "Не найдено"})
+		NotFoundErrorfunc(context, err)
 		return
 	}
 	context.IndentedJSON(http.StatusOK, note)
@@ -83,7 +83,7 @@ func getNoteForTag(context *gin.Context) {
 	tag := context.Param("tag")
 	note, err := getNoteByTag(tag)
 	if err != nil {
-		context.IndentedJSON(http.StatusNotFound, gin.H{"massage": "Не найдено"})
+		NotFoundErrorfunc(context, err)
 		return
 	}
 	context.IndentedJSON(http.StatusOK, note)
@@ -99,6 +99,10 @@ func getNoteByTag(tag string) (*note, error) {
 		}
 	}
 	return nil, errors.New("note not found")
+}
+
+func NotFoundErrorfunc(context *gin.Context, err error) {
+	context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Not found"})
 }
 
 func main() {
