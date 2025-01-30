@@ -12,6 +12,8 @@ func main() {
 	database.InitDB()        // Инициализация базы данных
 	defer database.CloseDB() // Закрытие соединения при завершении
 
+	go handlers.StartGRPCServer()
+
 	router := gin.Default()
 	router.GET("/notes", handlers.GetNotes)
 	router.POST("/notes", handlers.AddNote)

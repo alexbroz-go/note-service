@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package noteservice;
+
+option go_package = "note-service/noteservice";
+
+message Note {
+    int32 id = 1;                      // Уникальный идентификатор заметки
+    string date = 2;                   // Дата заметки
+    repeated string tag = 3;           // Теги для заметки
+    string text = 4;                   // Текст заметки
+}
+
+message NoteList {
+    repeated Note notes = 1;           // Список заметок
+}
+
+// Запрос для получения заметки по тексту
+message NoteTextRequest {
+    string text = 1;                   // Текст для поиска заметки
+}
+
+// Запрос для получения заметки по дате
+message NoteDateRequest {
+    string date = 1;                   // Дата для поиска заметки
+}
+
+// Запрос для получения заметок по тегу
+message NoteTagRequest {
+    string tag = 1;                    // Тег для поиска заметок
+}
+
+// Пустое сообщение для общего запроса
+message Request {}
+
+// Сервис заметок
+service NoteService {
+    rpc GetAllNotes(Request) returns (NoteList);             // Получение всех заметок
+    rpc AddNote(Note) returns (Note);                        // Добавление новой заметки
+    rpc GetNoteByText(NoteTextRequest) returns (Note);       // Получение заметки по тексту
+    rpc GetNoteByDate(NoteDateRequest) returns (Note);       // Получение заметки по дате
+    rpc GetNoteByTag(NoteTagRequest) returns (NoteList);     // Получение заметок по тегу
+}
+
